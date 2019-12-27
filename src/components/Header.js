@@ -13,11 +13,17 @@ import Icon from 'react-native-vector-icons/dist/Feather';
 
 export default class Header extends Component {
     render() {
+        let goBack=true;
+        if (this.props.goBack||this.props.goBack===false) {
+            goBack=false;
+        }
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => null} style={styles.btnBack}>
-                    <Icon name="arrow-left" size={25} color={colors.white} />
-                </TouchableOpacity>
+                {goBack ?
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.btnBack}>
+                        <Icon name="arrow-left" size={25} color={colors.white} />
+                    </TouchableOpacity> : null}
+
                 <Text style={styles.headerText}>{this.props.headerText ? this.props.headerText : " E-Wallet"} </Text>
             </View>
         )

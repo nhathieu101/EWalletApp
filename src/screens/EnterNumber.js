@@ -13,9 +13,9 @@ import Icon from 'react-native-vector-icons/dist/Feather';
 import ButtonGroup from '../components/ButtonGroup';
 import * as action from '../actions';
 import Header from '../components/Header';
+import {denominationArr} from '../utils/Text';
 import { connect } from 'react-redux'
 
-const denominationArr = [10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000]
 class EnterNumber extends Component {
     constructor(props) {
         super(props);
@@ -66,7 +66,7 @@ class EnterNumber extends Component {
         const { contacts, modalVisible, phoneNumbers, cardValue } = this.state
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <Header/>
+                <Header goBack={false}/>
                 <View style={styles.inputWrapper}>
                     <TextInput value={phoneNumbers !== null ? phoneNumbers : ""}
                         autoFocus={false} keyboardType="phone-pad"

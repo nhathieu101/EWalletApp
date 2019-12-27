@@ -29,7 +29,7 @@ class SelectPayment extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <Header />
+                <Header navigation={this.props.navigation} />
                 <Text>{this.props.phoneNumber}</Text>
                 <Text>{this.props.cardValue}</Text>
                 <PaymentMethod onSelect={() => this.handeSetMethod(1)} methodName="Linked account" />
