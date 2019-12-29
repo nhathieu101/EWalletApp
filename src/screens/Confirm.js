@@ -20,9 +20,9 @@ class Confirm extends Component {
             <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
                 <Header navigation={this.props.navigation} headerText="Confirm information" />
                 <View style={styles.inforWrapper}>
-                    <Text style={styles.title}>Payment method {this.props.paymentMethod}</Text>
+                    <Text style={styles.title}>Payment method</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: colors.white, marginVertical: 5, paddingVertical: 10 }}>
-                        <Text style={styles.textDetail}>Credit card</Text>
+                        <Text style={styles.textDetail}>{this.props.paymentMethod}</Text>
                         <Text onPress={() => null} style={[styles.textDetail, { color: colors.blue }]}>Change</Text>
                     </View>
                     <Text style={styles.title}>Transaction details</Text>
@@ -33,9 +33,9 @@ class Confirm extends Component {
                             <Text style={styles.textDetail}>Total amount</Text>
                         </View>
                         <View style={{ flex: 3, }}>
-                            <Text style={styles.textDetail}>096350488</Text>
-                            <Text style={styles.textDetail}>50000</Text>
-                            <Text style={styles.textDetail}>50000</Text>
+                            <Text style={styles.textDetail}>{this.props.phoneNumber}</Text>
+                            <Text style={styles.textDetail}>{this.props.cardValue} VND</Text>
+                            <Text style={styles.textDetail}>{this.props.cardValue} VND</Text>
                         </View>
                     </View>
                 </View>

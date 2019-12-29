@@ -11,8 +11,10 @@ import Contacts from 'react-native-contacts';
 import { colors, dimensions } from '../styles';
 import Icon from 'react-native-vector-icons/dist/Feather';
 import Header from '../components/Header';
+import PaymentMethods from '../components/PaymentMethod';
 import * as Action from '../actions';
 import { connect } from 'react-redux'
+import { methodArr } from '../utils/Text';
 
 
 class SelectPayment extends Component {
@@ -32,10 +34,10 @@ class SelectPayment extends Component {
                 <Header navigation={this.props.navigation} />
                 <Text>{this.props.phoneNumber}</Text>
                 <Text>{this.props.cardValue}</Text>
-                <PaymentMethod onSelect={() => this.handeSetMethod(1)} methodName="Linked account" />
-                <PaymentMethod onSelect={() => this.handeSetMethod(2)} methodName="International card" />
-                <PaymentMethod onSelect={() => this.handeSetMethod(3)} methodName="Domestic card" />
-                <PaymentMethod onSelect={() => this.handeSetMethod(4)} methodName="eWallet" />
+                <PaymentMethods value={methodArr} onChange={(method) => {
+                        // this.setState({ method: method })
+                        this.props.saveMethod(method)
+                    }} />
                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('Confirm')} style={styles.buttonPayWrapper}>
                     <Text style={styles.buttonText}>Pay</Text>
                 </TouchableOpacity>

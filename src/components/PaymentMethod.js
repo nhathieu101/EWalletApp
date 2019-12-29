@@ -3,7 +3,8 @@ import {
     Text, View, StyleSheet, TouchableWithoutFeedback, FlatList
 } from 'react-native'
 import { colors, dimensions } from '../styles'
-export default class ButtonGroup extends Component {
+
+export default class PaymentMethod extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,6 +16,7 @@ export default class ButtonGroup extends Component {
             activeOption,
         });
     };
+
 
     render() {
         const { value } = this.props
@@ -28,7 +30,7 @@ export default class ButtonGroup extends Component {
                         }}
                     />}
                     keyExtractor={(item, key) => key}
-                    numColumns={3} />
+                    numColumns={1} />
             </View>
         );
     }
@@ -38,8 +40,11 @@ class Button extends Component {
         const { item, activeOption, onSelect } = this.props
         return (
             <TouchableWithoutFeedback onPress={onSelect} >
-                <View style={[styles.btnOption, { backgroundColor: activeOption === item ? colors.lightBlue : colors.white }]}>
-                    <Text style={styles.txtOption}> {parseFloat(item).toLocaleString()}  VNĐ</Text>
+                <View style={styles.methodItem}>
+                    <View style={styles.circleCheckWrapper}>
+                        <View style={activeOption === item ? styles.circleCheck : styles.circleUnCheck} />
+                    </View>
+                    <Text style={styles.methodText} >{item}</Text>
                 </View>
             </TouchableWithoutFeedback>
         )
@@ -49,11 +54,11 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        margin:5,
-        marginTop:20
+        margin: 5,
+        marginTop: 20
     },
     btnOption: {
-        width:(dimensions.fullWidth-40)/3,
+        width: (dimensions.fullWidth - 40) / 3,
         backgroundColor: colors.white,
         justifyContent: 'center',
         alignItems: 'center',
@@ -65,5 +70,45 @@ const styles = StyleSheet.create({
     },
     txtOption: {
         fontSize: 12
+    },
+    methodItem: {
+        flexDirection: 'row',
+        backgroundColor: colors.white,
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        marginVertical: 5,
+        marginHorizontal: 10,
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
+    },
+
+    circleCheckWrapper: {
+        width: 14, height: 14,
+        backgroundColor: colors.lightBlue,
+        borderRadius: 7, justifyContent: 'center'
+    },
+    circleCheck: {
+        width: 7, height: 7,
+        backgroundColor: colors.blue,
+        borderRadius: 4,
+        alignSelf: 'center'
+    },
+    circleUnCheck: {
+        width: 7, height: 7,
+        backgroundColor: colors.gray,
+        borderRadius: 4,
+        alignSelf: 'center'
+    },
+    methodText: {
+        paddingLeft: 10,
+        fontSize: 18
     },
 })

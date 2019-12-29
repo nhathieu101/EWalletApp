@@ -9,11 +9,12 @@ import {
 import { PermissionsAndroid } from 'react-native';
 import Contacts from 'react-native-contacts';
 import { colors, dimensions } from '../styles';
-import Icon from 'react-native-vector-icons/dist/Feather';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import IconFeather from 'react-native-vector-icons/dist/Feather';
 import ButtonGroup from '../components/ButtonGroup';
 import * as action from '../actions';
 import Header from '../components/Header';
-import {denominationArr} from '../utils/Text';
+import { denominationArr } from '../utils/Text';
 import { connect } from 'react-redux'
 
 class EnterNumber extends Component {
@@ -24,7 +25,7 @@ class EnterNumber extends Component {
             contacts: [],
             phoneNumbers: null,
             cardValue: "",
-            disable:true
+            disable: true
         }
     }
     componentDidMount() {
@@ -40,12 +41,12 @@ class EnterNumber extends Component {
             await PermissionsAndroid.requestMultiple(permissions);
         }
     }
-    handleNext=()=>{
+    handleNext = () => {
         if (this.state.cardValue) {
             this.props.savePhoneNumber(this.state.phoneNumbers)
             this.props.saveCardValue(this.state.cardValue)
             this.props.navigation.navigate('SelectPayment')
-        }else{
+        } else {
             alert('fail')
         }
     }
@@ -66,21 +67,22 @@ class EnterNumber extends Component {
         const { contacts, modalVisible, phoneNumbers, cardValue } = this.state
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <Header goBack={false}/>
+                <Header headerText="Mobile payment" goBack={false} />
                 <View style={styles.inputWrapper}>
                     <TextInput value={phoneNumbers !== null ? phoneNumbers : ""}
                         autoFocus={false} keyboardType="phone-pad"
                         placeholder="Enter phone number"
                         onChangeText={(text) => this.setState({ phoneNumbers: text })} />
-                    <TouchableOpacity style={{ padding: 10 }} onPress={() => this.openContact()} >
-                        <Icon name="plus" size={20} />
+                    <TouchableOpacity style={{ padding: 10, }} onPress={() => this.openContact()} >
+                        <Icon name="address-book" size={20} color={colors.blue} />
                     </TouchableOpacity>
                 </View>
                 <View>
+                    <Text style={{ marginLeft: 10, fontSize: 18 }}>Choose denominations</Text>
                     <ButtonGroup value={denominationArr} onChange={(cardValue) => {
                         this.setState({ cardValue: cardValue })
                     }} />
-                    <TouchableOpacity onPress={()=>this.handleNext()} style={styles.buttonNext}>
+                    <TouchableOpacity onPress={() => this.handleNext()} style={[styles.buttonNext, this.state.phoneNumbers && this.state.cardValue ? { backgroundColor: colors.blue } : { backgroundColor: colors.gray }]}>
                         <Text style={styles.buttonNextText}>Next</Text>
                     </TouchableOpacity>
                 </View>
@@ -92,21 +94,19 @@ class EnterNumber extends Component {
                     onRequestClose={() => {
                         Alert.alert('Modal has been closed.');
                     }}>
-                    <View style={{ marginTop: 22 }}>
-                        <View>
-                            <Text>Phonebook</Text>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.setState({ modalVisible: false });
-                                }}>
-                                <Text>Hide Modal</Text>
-                            </TouchableOpacity>
-                            <FlatList
-                                data={contacts}
-                                renderItem={({ item }) => <ContactItem item={item} selectContact={() => this.setState({ phoneNumbers: item.phoneNumbers[0].number, modalVisible: false })} />}
-                                keyExtractor={(item, key) => key}
-                            />
-                        </View>
+                    <View  >
+                        <Header headerText="Select contact" goBack={false} />
+                        <TouchableOpacity style={{ position: 'absolute', left: 0, padding: 11 }}
+                            onPress={() => {
+                                this.setState({ modalVisible: false });
+                            }}>
+                            <IconFeather name="arrow-left" size={25} color={colors.white} />
+                        </TouchableOpacity>
+                        <FlatList
+                            data={contacts}
+                            renderItem={({ item }) => <ContactItem item={item} selectContact={() => this.setState({ phoneNumbers: item.phoneNumbers[0].number, modalVisible: false })} />}
+                            keyExtractor={(item, key) => key}
+                        />
                     </View>
                 </Modal>
             </SafeAreaView>
@@ -173,22 +173,26 @@ const styles = StyleSheet.create({
     },
     inputWrapper: {
         flexDirection: 'row',
-        backgroundColor: colors.borderGray,
+        // backgroundColor: colors.lightGray,
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        margin: 10,
+        borderBottomColor: colors.blue,
+        borderBottomWidth: 1
     },
     buttonNext: {
         position: 'absolute',
         right: 0, bottom: 0,
-        margin: 5, padding: 10,
+        margin: 10, padding: 10,
         backgroundColor: colors.blue,
-        width: (dimensions.fullWidth - 30) / 3,
+        width: (dimensions.fullWidth - 40) / 3,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    buttonNextText:{
-        color:colors.white,
-        fontWeight:'bold'
+    buttonNextText: {
+        color: colors.white,
+        fontWeight: 'bold'
     }
 })
