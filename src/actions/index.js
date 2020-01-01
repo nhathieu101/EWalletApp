@@ -16,3 +16,8 @@ export function saveMethod(method) {
         paymentMethod: method
     }
 }
+export function clearState() {
+    return {
+        type: 'COMPLETE',
+    }
+}

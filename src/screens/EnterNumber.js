@@ -4,7 +4,7 @@ import {
     TextInput, TouchableOpacity,
     Platform, Modal, FlatList,
     Image, TouchableWithoutFeedback,
-    Alert, StyleSheet
+    Alert, StyleSheet, StatusBar
 } from 'react-native'
 import { PermissionsAndroid } from 'react-native';
 import Contacts from 'react-native-contacts';
@@ -25,11 +25,26 @@ class EnterNumber extends Component {
             contacts: [],
             phoneNumbers: null,
             cardValue: "",
-            disable: true
+            disable: true,
+            validateNumber: false
         }
     }
     componentDidMount() {
-        this.checkPermission()
+        this.checkPermission();
+        this.focusListener = this.props.navigation.addListener("didFocus", () => {
+            if (this.props.navigation.getParam('clearState', false)) {
+                this.setState({
+                    modalVisible: false,
+                    contacts: [],
+                    phoneNumbers: null,
+                    cardValue: "",
+                    disable: true
+                })
+            }
+        });
+    }
+    componentWillUnmount() {
+        this.focusListener.remove();
     }
 
     async checkPermission(
@@ -61,29 +76,42 @@ class EnterNumber extends Component {
             }
         })
     }
-
+    onChangeText = (number) => {
+        this.setState({ phoneNumbers: number, validateNumber: this.validatePhone(number) })
+    }
+    validatePhone = (number) => {
+        var re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+        return re.test(number);
+    };
     render() {
         console.log(this.props.phoneNumber)
-        const { contacts, modalVisible, phoneNumbers, cardValue } = this.state
+        const { contacts, modalVisible, phoneNumbers, cardValue, validateNumber } = this.state
         return (
-            <SafeAreaView style={{ flex: 1 }}>
-                <Header headerText="Mobile payment" goBack={false} />
-                <View style={styles.inputWrapper}>
-                    <TextInput value={phoneNumbers !== null ? phoneNumbers : ""}
-                        autoFocus={false} keyboardType="phone-pad"
-                        placeholder="Enter phone number"
-                        onChangeText={(text) => this.setState({ phoneNumbers: text })} />
-                    <TouchableOpacity style={{ padding: 10, }} onPress={() => this.openContact()} >
-                        <Icon name="address-book" size={20} color={colors.blue} />
-                    </TouchableOpacity>
-                </View>
+            <SafeAreaView style={{ flex: 1, justifyContent: 'space-between', backgroundColor: colors.lightGray }}>
+                <StatusBar backgroundColor={colors.blue} barStyle="light-content" />
                 <View>
-                    <Text style={{ marginLeft: 10, fontSize: 18 }}>Choose denominations</Text>
-                    <ButtonGroup value={denominationArr} onChange={(cardValue) => {
-                        this.setState({ cardValue: cardValue })
-                    }} />
-                    <TouchableOpacity onPress={() => this.handleNext()} style={[styles.buttonNext, this.state.phoneNumbers && this.state.cardValue ? { backgroundColor: colors.blue } : { backgroundColor: colors.gray }]}>
-                        <Text style={styles.buttonNextText}>Next</Text>
+                    <Header headerText="Mobile Top-up" goBack={false} />
+                    <View style={styles.inputWrapper}>
+                        <TextInput value={phoneNumbers !== null ? phoneNumbers : ""}
+                            autoFocus={false} keyboardType="phone-pad"
+                            placeholder="Enter Mobile phone number"
+                            onChangeText={(text) => this.onChangeText(text)} />
+                        <TouchableOpacity style={{ padding: 10, }} onPress={() => this.openContact()} >
+                            <Icon name="address-book" size={20} color={colors.redOrange} />
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Text style={{ marginLeft: 10, fontSize: 18 }}>Select card price(VNĐ)</Text>
+                        <ButtonGroup value={denominationArr} onChange={(cardValue) => {
+                            this.setState({ cardValue: cardValue })
+                        }} />
+
+                    </View>
+                </View>
+                <View style={styles.bottomView}>
+                    <Text style={{ padding: 20 }}>Total: {cardValue}</Text>
+                    <TouchableOpacity onPress={() => phoneNumbers && cardValue&&validateNumber ? this.handleNext() : null} style={[styles.buttonNext, phoneNumbers && cardValue&&validateNumber ? { backgroundColor: colors.redOrange } : { backgroundColor: colors.gray }]}>
+                        <Text style={styles.buttonNextText}>CONTINUE</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -92,7 +120,7 @@ class EnterNumber extends Component {
                     transparent={false}
                     visible={modalVisible}
                     onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
+                        this.setState({ modalVisible: false });
                     }}>
                     <View  >
                         <Header headerText="Select contact" goBack={false} />
@@ -104,7 +132,7 @@ class EnterNumber extends Component {
                         </TouchableOpacity>
                         <FlatList
                             data={contacts}
-                            renderItem={({ item }) => <ContactItem item={item} selectContact={() => this.setState({ phoneNumbers: item.phoneNumbers[0].number, modalVisible: false })} />}
+                            renderItem={({ item }) => <ContactItem item={item} selectContact={() => this.setState({ modalVisible: false }, () => this.onChangeText(item.phoneNumbers[0].number))} />}
                             keyExtractor={(item, key) => key}
                         />
                     </View>
@@ -179,20 +207,31 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         margin: 10,
         borderBottomColor: colors.blue,
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
     },
     buttonNext: {
         position: 'absolute',
-        right: 0, bottom: 0,
-        margin: 10, padding: 10,
+        top: -15, right: 10,
+        paddingHorizontal: 30,
         backgroundColor: colors.blue,
-        width: (dimensions.fullWidth - 40) / 3,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
+        borderRadius: 10,
+        paddingVertical: 10
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
     buttonNextText: {
         color: colors.white,
         fontWeight: 'bold'
+    },
+    bottomView: {
+        backgroundColor: colors.white, shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
     }
 })

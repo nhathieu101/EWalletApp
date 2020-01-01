@@ -21,6 +21,13 @@ export default function commonReducer(state = initialState, action) {
                 ...state,
                 paymentMethod: action.paymentMethod
             }
+        case 'COMPLETE':
+            return {
+                phoneNumber: null,
+                total: null,
+                paymentMethod: null,
+                cardValue: 0
+            }
         default:
             return state
     }

@@ -29,37 +29,26 @@ class SelectPayment extends Component {
         this.props.saveMethod(value)
     }
     render() {
+        const { cardValue, phoneNumber } = this.props
+        const { method } = this.state
         return (
-            <SafeAreaView style={{ flex: 1 }}>
-                <Header navigation={this.props.navigation} />
-                <Text>{this.props.phoneNumber}</Text>
-                <Text>{this.props.cardValue}</Text>
-                <PaymentMethods value={methodArr} onChange={(method) => {
-                        // this.setState({ method: method })
-                        this.props.saveMethod(method)
+            <SafeAreaView style={{ flex: 1, backgroundColor: colors.lightGray, justifyContent: 'space-between' }}>
+                <View>
+                    <Header navigation={this.props.navigation} />
+  
+                    <PaymentMethods cardValue={cardValue} phoneNumber={phoneNumber} value={methodArr} onChange={(method) => {
+                        this.setState({ method: method }, () => this.props.saveMethod(method))
+
                     }} />
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Confirm')} style={styles.buttonPayWrapper}>
+                </View>
+                <TouchableOpacity onPress={() => method ? this.props.navigation.navigate('Confirm') : null} style={styles.buttonPayWrapper}>
                     <Text style={styles.buttonText}>Pay</Text>
                 </TouchableOpacity>
             </SafeAreaView>
         )
     }
 }
-class PaymentMethod extends Component {
-    render() {
-        const { methodName, onSelect } = this.props
-        return (
-            <TouchableOpacity onPress={onSelect}>
-                <View style={styles.methodItem}>
-                    <View style={styles.circleCheckWrapper}>
-                        <View style={styles.circleCheck} />
-                    </View>
-                    <Text style={styles.methodText} >{methodName}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-}
+
 function mapStateToProps(state) {
     const { phoneNumber, cardValue } = state;
     return {
@@ -110,10 +99,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     buttonPayWrapper: {
-        backgroundColor: colors.blue,
+        backgroundColor: colors.redOrange,
         padding: 10,
         margin: 5,
-        borderRadius: 20,
+        borderRadius: 10,
         alignItems: 'center',
     },
     buttonText: {

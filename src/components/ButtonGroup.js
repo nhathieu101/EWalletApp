@@ -38,8 +38,8 @@ class Button extends Component {
         const { item, activeOption, onSelect } = this.props
         return (
             <TouchableWithoutFeedback onPress={onSelect} >
-                <View style={[styles.btnOption, { backgroundColor: activeOption === item ? colors.lightBlue : colors.white }]}>
-                    <Text style={styles.txtOption}> {parseFloat(item).toLocaleString()}  VNĐ</Text>
+                <View style={[styles.btnOption, { backgroundColor: activeOption === item ? colors.borderGrayLight : colors.white }]}>
+                    <Text style={styles.txtOption}>{parseFloat(item).toLocaleString()} VNĐ</Text>
                 </View>
             </TouchableWithoutFeedback>
         )
@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
         margin: 5
     },
     txtOption: {
-        fontSize: 12
+        fontSize: 12,
+        color:colors.blue,
+        fontWeight:'700'
     },
 })
