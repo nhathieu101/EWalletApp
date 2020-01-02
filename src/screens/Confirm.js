@@ -14,7 +14,7 @@ import Header from '../components/Header';
 import * as action from '../actions';
 import { connect } from 'react-redux'
 import { methodArr } from '../utils/Text';
-
+import Button from '../components/Button'
 class Confirm extends Component {
     constructor(props) {
         super(props)
@@ -85,14 +85,12 @@ class Confirm extends Component {
                         </View>
                         <View style={{ flex: 3, }}>
                             <Text style={styles.textDetail}>{this.props.phoneNumber}</Text>
-                            <Text style={styles.textDetail}>{this.props.cardValue} VND</Text>
-                            <Text style={styles.textDetail}>{this.props.cardValue} VND</Text>
+                            <Text style={styles.textDetail}>{parseFloat(this.props.cardValue).toLocaleString()} VND</Text>
+                            <Text style={styles.textDetail}>{parseFloat(this.props.cardValue).toLocaleString()} VND</Text>
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.btnPay} onPress={() => this.handlePay()}>
-                    <Text style={styles.btnPayText}>Confirm</Text>
-                </TouchableOpacity>
+                <Button label="Confirm" onPress={() => this.handlePay()} />
             </SafeAreaView>
         )
     }

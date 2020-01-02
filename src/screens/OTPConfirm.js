@@ -9,11 +9,7 @@ import {
 import { PermissionsAndroid } from 'react-native';
 import Contacts from 'react-native-contacts';
 import { colors, dimensions } from '../styles';
-import Icon from 'react-native-vector-icons/dist/Feather';
-import Header from '../components/Header';
-import * as action from '../actions';
-import { connect } from 'react-redux'
-import { methodArr } from '../utils/Text';
+import Button from '../components/Button';
 
 export default class OTPConfirm extends Component {
     constructor(props) {
@@ -29,9 +25,8 @@ export default class OTPConfirm extends Component {
                     <Text style={styles.txtLarge}> Verifycation </Text>
                     <Text style={{ alignSelf: 'center', }}> OTP is send to your number, Please enter OTP to verify </Text>
                     <TextInput style={styles.inputOtp} placeholder="Enter OTP" />
-                    <TouchableOpacity style={styles.btnVerify} onPress={()=>this.props.navigation.navigate('Complete')}>
-                        <Text style={{color:colors.white, fontWeight:'700'}}>Verify</Text>
-                    </TouchableOpacity>
+                    <Button label="Verify" onPress={() => this.props.navigation.navigate('Complete')} />
+
                 </View>
             </SafeAreaView>
         );
@@ -55,8 +50,8 @@ const styles = StyleSheet.create({
     txtLarge: {
         alignSelf: 'center',
         fontSize: 18,
-        color:colors.blue,
-        fontWeight:'700',
+        color: colors.blue,
+        fontWeight: '700',
         padding: 10,
     }
 })

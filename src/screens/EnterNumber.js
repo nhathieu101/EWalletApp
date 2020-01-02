@@ -32,15 +32,17 @@ class EnterNumber extends Component {
     componentDidMount() {
         this.checkPermission();
         this.focusListener = this.props.navigation.addListener("didFocus", () => {
-            if (this.props.navigation.getParam('clearState', false)) {
-                this.setState({
-                    modalVisible: false,
-                    contacts: [],
-                    phoneNumbers: null,
-                    cardValue: "",
-                    disable: true
-                })
-            }
+            // let clearDT=this.props.navigation.getParam('clearState', false);
+            // console.log(clearDT)
+            // if (clearDT) {
+            //     this.setState({
+            //         modalVisible: false,
+            //         contacts: [],
+            //         phoneNumbers: null,
+            //         cardValue: "",
+            //         disable: true
+            //     })
+            // }
         });
     }
     componentWillUnmount() {
@@ -109,8 +111,8 @@ class EnterNumber extends Component {
                     </View>
                 </View>
                 <View style={styles.bottomView}>
-                    <Text style={{ padding: 20 }}>Total: {cardValue}</Text>
-                    <TouchableOpacity onPress={() => phoneNumbers && cardValue&&validateNumber ? this.handleNext() : null} style={[styles.buttonNext, phoneNumbers && cardValue&&validateNumber ? { backgroundColor: colors.redOrange } : { backgroundColor: colors.gray }]}>
+                    <Text style={{ padding: 20 }}>Total: {cardValue} VNĐ</Text>
+                    <TouchableOpacity activeOpacity={0.9} onPress={() => phoneNumbers && cardValue&&validateNumber ? this.handleNext() : null} style={[styles.buttonNext, phoneNumbers && cardValue&&validateNumber ? { backgroundColor: colors.redOrange } : { backgroundColor: colors.gray }]}>
                         <Text style={styles.buttonNextText}>CONTINUE</Text>
                     </TouchableOpacity>
                 </View>

@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/dist/Feather';
 import Header from '../components/Header';
 import * as action from '../actions';
 import { connect } from 'react-redux'
-import { methodArr } from '../utils/Text';
+import Button from '../components/Button';
 
 class CompleteTransaction extends Component {
 
@@ -21,13 +21,12 @@ class CompleteTransaction extends Component {
         return (
             <SafeAreaView style={{ flex: 1, justifyContent:'center' }}>
 
-                <Text style={{ alignSelf: 'center', }}> Complete Transaction </Text>
-                <TouchableOpacity onPress={() => {
+                <Text style={{ alignSelf: 'center', fontSize:18 }}> Complete Transaction </Text>
+
+                <Button label="Back to home" onPress={() => {
                     this.props.clearState();
                     this.props.navigation.navigate('EnterNumber', { clearState: true })
-                }} style={{ backgroundColor: colors.redOrange, padding: 10, marginHorizontal: 40,marginVertical: 20, borderRadius: 10, alignItems: 'center', }} >
-                    <Text style={{color:colors.white}}>Back to home</Text>
-                </TouchableOpacity>
+                }} />
             </SafeAreaView>
         );
     }

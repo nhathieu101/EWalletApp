@@ -15,6 +15,7 @@ import PaymentMethods from '../components/PaymentMethod';
 import * as Action from '../actions';
 import { connect } from 'react-redux'
 import { methodArr } from '../utils/Text';
+import Button from '../components/Button';
 
 
 class SelectPayment extends Component {
@@ -41,9 +42,10 @@ class SelectPayment extends Component {
 
                     }} />
                 </View>
-                <TouchableOpacity onPress={() => method ? this.props.navigation.navigate('Confirm') : null} style={styles.buttonPayWrapper}>
+                <Button label="Next"  onPress={() => method ? this.props.navigation.navigate('Confirm') : null}/>
+                {/* <TouchableOpacity onPress={() => method ? this.props.navigation.navigate('Confirm') : null} style={styles.buttonPayWrapper}>
                     <Text style={styles.buttonText}>Pay</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </SafeAreaView>
         )
     }
